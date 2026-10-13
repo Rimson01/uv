@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+v0/*.log
+v0/*_runtime.json
+v0/v0_home_*.txt
+v0/v0_work_*.txt
