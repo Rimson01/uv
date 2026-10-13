@@ -1,0 +1,60 @@
+LSY UV Repair V0 report
+Max version: #(26000, 64, 0, 26, 2, 7, 414, 2024, ".2.7 Security Fix")
+Scene: 
+Target: Teapot001
+
+maxVersion: #(26000, 64, 0, 26, 2, 7, 414, 2024, ".2.7 Security Fix")
+scene: 
+Selected object has no Unwrap UVW modifier. Add one manually to a saved test scene.
+maxVersion: #(26000, 64, 0, 26, 2, 7, 414, 2024, ".2.7 Security Fix")
+scene: 
+Target: Teapot001 / Unwrap UVW
+node class: Editable_Poly
+modifier count: 1
+channel: UV 1 (raw API value 0)
+UV vertices: 2584
+UV faces: 2048
+selection mode (0/1/2/3): 3
+selected UV vertices: 0
+selected UV faces: 0
+freeform: true
+selection lock: false
+soft selection: false
+selected tick size: 2
+click hit size: 4
+P0 diagnostic captured. Runtime Python/Qt details: run v0_runtime_probe.py separately.
+maxVersion: #(26000, 64, 0, 26, 2, 7, 414, 2024, ".2.7 Security Fix")
+scene: 
+node class: Editable_Poly
+modifier count: 1
+channel: UV 1 (raw API value 0)
+UV vertices: 2584
+UV faces: 2048
+selection mode (0/1/2/3): 0
+selected UV vertices: 0
+selected UV faces: 0
+freeform: true
+selection lock: false
+soft selection: false
+selected tick size: 2
+click hit size: 4
+P0 diagnostic captured. Runtime Python/Qt details: run v0_runtime_probe.py separately.
+P1 native mode: freeform
+P1 native mode: move
+P1 native mode: Rotate
+P1 native mode: scale
+P1 native mode: freeform
+P1 native mode: freeform
+P1 native mode: freeform
+P1 native mode: pivot
+P1 native mode: moveU
+P1 native mode: moveV
+P1 native mode: scaleV
+P1 native mode: freeform
+P2 snapshot: 4 UV vertices; channel=UV 1 (raw API value 0)
+P2 after Undo: changed=1, max UVW delta=0.260716
+P2 after Undo: changed=1, max UVW delta=0.260716
+P2 after drag: changed=1, max UVW delta=0.260716
+P2 after Undo: changed=0, max UVW delta=0.0
+P2 after Redo: changed=0, max UVW delta=0.0
+P3 face=641 ID=1 slot=0 map=<none or nested/unsupported>

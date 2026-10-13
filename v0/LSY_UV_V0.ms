@@ -32,6 +32,7 @@ struct LSYV0_State
     mod = undefined,
     baseline = undefined,
     before = undefined,
+    dragged = undefined,
     lines = #(),
     stepResults = #()
 )
@@ -89,6 +90,7 @@ fn lsyv0Target =
         lsyv0.node = n
         lsyv0.mod = m
         lsyv0.before = undefined
+        lsyv0.dragged = undefined
         lsyv0.baseline = undefined
         lsyv0Log ("Target: " + n.name + " / " + m.name)
     )
@@ -208,6 +210,12 @@ fn lsyv0Mode mode =
             #pivot: m.snapPivot 1
         )
         lsyv0Log ("P1 native mode: " + mode as string)
+        if lsyv0.before != undefined do
+        (
+            lsyv0.before = undefined
+            lsyv0.dragged = undefined
+            lsyv0Log "P2 snapshot cleared after mode change. Capture selected UVs before the next drag."
+        )
         true
     )
     catch
@@ -232,19 +240,21 @@ fn lsyv0CaptureSelected =
             return false
         )
         for id in ids do append positions (m.getVertexPosition currentTime id)
-        lsyv0.before = #(lsyv0.node, lsyv0.mod, lsyv0Channel m, ids, positions)
+        lsyv0.before = #(lsyv0.node, lsyv0.mod, lsyv0Channel m, ids, positions, currentTime)
+        lsyv0.dragged = undefined
         lsyv0Log ("P2 snapshot: " + ids.count as string + " UV vertices; channel=" + lsyv0.before[3])
         true
     )
     catch
     (
         lsyv0.before = undefined
+        lsyv0.dragged = undefined
         lsyv0Log "P2 snapshot failed. Check modifier/UI context."
         false
     )
 )
 
-fn lsyv0CompareSelected label =
+fn lsyv0CompareSelected phase =
 (
     if lsyv0.before == undefined then
     (
@@ -265,18 +275,58 @@ fn lsyv0CompareSelected label =
         lsyv0Log "P2 channel changed. Snapshot invalid."
         return false
     )
-    local maxDelta = 0.0
-    local changed = 0
+    if currentTime != b[6] then
+    (
+        lsyv0Log "P2 time changed. Snapshot invalid."
+        return false
+    )
+    if (phase == #undo or phase == #redo) and lsyv0.dragged == undefined then
+    (
+        lsyv0Log "P2: Compare after drag before checking Undo or Redo."
+        return false
+    )
+    if phase == #drag and lsyv0.dragged != undefined then
+    (
+        lsyv0Log "P2: This drag was already captured. Capture selected UVs for a new cycle."
+        return false
+    )
+    local positions = #()
+    local maxFromInitial = 0.0
+    local maxFromExpected = 0.0
+    local changedFromInitial = 0
     try
     (
         for i = 1 to b[4].count do
         (
             local p = m.getVertexPosition currentTime b[4][i]
+            append positions p
             local d = distance p b[5][i]
-            if d > maxDelta do maxDelta = d
-            if d > 0.000001 do changed += 1
+            if d > maxFromInitial do maxFromInitial = d
+            if d > 0.000001 do changedFromInitial += 1
+            if phase == #redo do
+            (
+                local expectedDelta = distance p (lsyv0.dragged[i])
+                if expectedDelta > maxFromExpected do maxFromExpected = expectedDelta
+            )
         )
-        lsyv0Log ("P2 " + label + ": changed=" + changed as string + ", max UVW delta=" + maxDelta as string)
+        local selectedNow = m.getSelectedVertices() as array
+        if phase == #drag then
+        (
+            if changedFromInitial > 0 do lsyv0.dragged = positions
+            lsyv0Log ("P2 after drag: captured=" + b[4].count as string + ", currently selected=" + selectedNow.count as string + ", changed=" + changedFromInitial as string + ", max from initial=" + maxFromInitial as string)
+            if changedFromInitial > 0 and changedFromInitial < b[4].count do lsyv0Log "P2 CHECK: Only some captured UVs moved. Inspect whether clicking the handle changed selection."
+        )
+        else if phase == #undo then
+        (
+            lsyv0Log ("P2 after Undo: max from initial=" + maxFromInitial as string + (if maxFromInitial <= 0.000001 then " PASS" else " FAIL"))
+        )
+        else if phase == #redo then
+        (
+            lsyv0Log ("P2 after Redo: max from drag=" + maxFromExpected as string + ", max from initial=" + maxFromInitial as string + (if maxFromExpected <= 0.000001 then " PASS" else " FAIL"))
+            lsyv0.before = undefined
+            lsyv0.dragged = undefined
+            lsyv0Log "P2 cycle complete. Capture selected UVs before testing another drag."
+        )
         true
     )
     catch
@@ -439,9 +489,9 @@ rollout LSYV0_Rollout "LSY UV Repair | V0 Probe" width:316
     on scaleU pressed do lsyv0Mode #scaleU
     on scaleV pressed do lsyv0Mode #scaleV
     on before pressed do lsyv0CaptureSelected()
-    on after pressed do lsyv0CompareSelected "after drag"
-    on afterUndo pressed do lsyv0CompareSelected "after Undo"
-    on afterRedo pressed do lsyv0CompareSelected "after Redo"
+    on after pressed do lsyv0CompareSelected #drag
+    on afterUndo pressed do lsyv0CompareSelected #undo
+    on afterRedo pressed do lsyv0CompareSelected #redo
     on materialProbe pressed do lsyv0MaterialProbe()
     on pass pressed do lsyv0Record step.selected "PASS" note.text
     on fail pressed do lsyv0Record step.selected "FAIL" note.text
