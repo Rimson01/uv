@@ -1,6 +1,29 @@
 # LSY UV Repair — 개발 로드맵
 
-이 문서는 개발 계획이다. 아래 PoC, 코드 작성, Max 테스트는 이번 요청에서 실행하지 않았다. 1명의 숙련된 개발자/TA와 에셋 담당자의 정기 검토를 가정하며, 1인일은 6–8시간이다. 기간은 추정이고 버전·실제 씬·호스트 API 검증 결과에 따라 달라진다.
+이 문서의 초기 계획표는 구현 전에 작성됐다. 아래 인일 추정과 gate는 계획이며 현재 작업·실행 증거는 최신 실행 계획과 WORK_STATUS.md를 따른다. 1명의 숙련된 개발자/TA와 에셋 담당자의 정기 검토를 가정하며, 1인일은 6–8시간이다. 기간은 추정이고 버전·실제 씬·호스트 API 검증 결과에 따라 달라진다.
+
+
+## 최신 실행 계획 — 2026-10-14 전체 리뷰 반영
+
+아래 기존 인일/버전 계획은 초기 추정 기록이다. 지금의 사용자 방향과 실제 진척은 이 절과 WORK_STATUS.md를 따른다. 별도 canvas/custom gizmo 전환은 사용자 요청으로 제외했고 미선택 점 스타일은 보류한다. ID 격리는 UV Editor 표시만 대상으로 한다.
+
+| 순서 | 작업 묶음 | 산출물과 통과 기준 | 현재 |
+|---|---|---|---|
+| R0 | 전체 리뷰·기능 재평가·명확한 결함 수정 | stale 분석 폐기, write preflight, 점 수 변화 보호, 현재 UI/기능 상태 정리 | 0.13 코드 수정. cloud 검사 가능, host 확인 대기 |
+| R1 | session/snapshot/transaction 기반 정리 | numeric/선택 명령의 topology/time/channel guard와 전체 실패 복원; 실패 시 이전 결과 적용 금지; 자동 host runner로 Undo/Redo·불변식 묶음 검사 | 0.14 공통 Hold/전체 corner guard 구현, host gate 대기 |
+| R2 | F03 대응을 제품 데이터로 보존 | 후보별 point correspondence, rigid transform, 최대/RMS 잔차, material/texture identity. 동일 ID의 비대칭 37° 복제·재번호·음성·대칭 fixture 검사 | 0.14 대응·rigid transform 보존 구현, host 정합 재검증 대기 |
+| R3 | F04 Exact Stack | 기존 Editor에서 취소 가능한 전후 preview, 전체 대상 영향 표시, 기준 불변, 하나의 apply/Undo, 일부 setter 실패 시 전체 rollback. scale/mirror 기본 off | 0.14 계산·적용 구현. ghost preview와 host gate 미완 |
+| R4 | F05 Density | 우선 읽기 Get와 Reference 수치. 같은 corner triangulation/world 시스템단위/비정사각 해상도 검산 후 Set+preview를 동일 transaction으로 추가 | 0.14 Get/Reference/Set 코드 구현. raw/단일 입력 해상도, host gate 미완 |
+| R5 | 표시 연결의 독립 안정화 | map/filter/auto 하나의 display ownership, 전체/부분 복원 구분, pending 재시도. 실제 Editor 컨트롤 identity가 확보돼야 ID+background 동시 연동 승격 | R1–R4를 UI 탐색 추측으로 지연시키지 않음 |
+| R6 | 사용성/성능/호환성 | 세로 접이식 주요 작업 UI, native 도구 접기, 명확한 tooltip, 큰 모델 extract/search/write 측정과 lifecycle 회귀 | 핵심 작업에 맞춰 묶어 진행 |
+
+R1 없이는 신규 좌표 쓰기 기능을 붙이지 않는다. R2만 끝났다고 R3 완료로 보고하지 않는다. R3/R4 preview는 독립 UV canvas를 만들지 않고 기존 Editor에서 확인할 수 있는 경로를 검증한다. ghost overlay가 공개 API로 불가능하면 preview UX와 지원 범위를 다시 명시하며 수치 표시만으로 원래 시각 preview gate를 통과했다고 하지 않는다.
+
+ID 연동은 한 번의 정보 수집으로 actual native control type/owner/events를 식별하고 재현 fixture로 검증할 수 있을 때 진행한다. API getter나 전역 Qt 메뉴 탐색만 바꿔 계속 새 버전을 내지 않는다. 정상 Bitmap 자동 배경의 실패를 수동 파일 선택으로 해결 완료 처리하지 않는다.
+
+보고 단위는 위 작업 묶음이다. 각 묶음에서 변경·독립 검사·host 필요 항목을 정리해 한 번 보고한다. 외부 Max 실행은 자동 runner로 한 번에 묶고, 사용자에게 반복되는 작은 손 테스트를 요구하지 않는다. 단계 기간/토큰은 실제 profile과 host gate 전에는 재확정하지 않는다.
+
+## 초기 계획 기록
 
 ## V0 — 기술 검증과 지원 범위 확정
 

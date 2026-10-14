@@ -1,6 +1,6 @@
 # LSY UV Repair — 기술 검증·테스트 계획
 
-상태: **계획만 작성. 모든 Max 실행 테스트는 미실행(Not Run).** 문서·수식 검토와 호스트 동작 검증을 구분한다. API 근거는 [TECHNICAL_FEASIBILITY.md](TECHNICAL_FEASIBILITY.md), 동작 규칙은 [FEATURE_SPEC.md](FEATURE_SPEC.md)를 따른다.
+상태: 아래는 원래 출시 gate다. 사용자 Max에서 native M/R/S 일부 Undo/Redo, 이전 Bitmap 배경 및 Exact 검색·후보 선택 증거가 생겼다. 현재 gate 전체 통과 상태는 아니며 최신 수정본의 Max 실행은 미실행이다. [현재 현황](WORK_STATUS.md)에서 버전별 증거와 미완 항목을 구분한다. 문서·수식 검토와 호스트 동작 검증을 구분한다. API 근거는 [TECHNICAL_FEASIBILITY.md](TECHNICAL_FEASIBILITY.md), 동작 규칙은 [FEATURE_SPEC.md](FEATURE_SPEC.md)를 따른다.
 
 ## 환경·fixture·측정 규약
 

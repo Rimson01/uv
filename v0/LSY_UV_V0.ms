@@ -151,8 +151,8 @@ fn lsyv0ApplyVisibility tick hit selectedColor edgeColor =
     (
         m.setTickSize tick
         m.setHitSize hit
-        m.setSelectionColor (point3 selectedColor.r selectedColor.g selectedColor.b)
-        m.setLineColor (point3 edgeColor.r edgeColor.g edgeColor.b)
+        m.setSelectionColor (point3 (selectedColor.r / 255.0) (selectedColor.g / 255.0) (selectedColor.b / 255.0))
+        m.setLineColor (point3 (edgeColor.r / 255.0) (edgeColor.g / 255.0) (edgeColor.b / 255.0))
         m.UpdateView()
         lsyv0Log ("P1 visual settings applied: selected tick=" + tick as string + ", hit=" + hit as string)
         true

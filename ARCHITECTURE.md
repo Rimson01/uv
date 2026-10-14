@@ -1,6 +1,6 @@
 # LSY UV Repair — 아키텍처
 
-아래는 구현 전 설계다. 실제 파일·클래스는 아직 없다. API 근거는 [TECHNICAL_FEASIBILITY.md](TECHNICAL_FEASIBILITY.md)를 참조한다.
+아래 A/B/C 비교와 모듈 표는 초기 설계다. 현재는 `v1/LSY_UV_Workbench.ms`의 native 세로 패널과 일부 canonical helper가 구현됐다. 실제 구조 평가·수정 방향은 [전체 리뷰](REVIEW_2026-10-14.md)를 따른다. 사용자가 거절한 custom canvas 경로는 현재 실행 계획에서 제외했다. API 근거는 [TECHNICAL_FEASIBILITY.md](TECHNICAL_FEASIBILITY.md)를 참조한다.
 
 ## A/B/C 비교와 결정
 

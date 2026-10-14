@@ -1,0 +1,30 @@
+{
+  "source": "https://help.autodesk.com/cloudhelp/2023/ENU/MAXScript-Help/files/3ds-Max-Objects-and-Interfaces/Modifier-MAXWrapper-and/Modifier-and-SpacewarpModifier/Modifiers/UVW-Modifiers/GUID-17D700DC-1FDC-4713-8041-D9E3C3EB4789.html",
+  "checked_at": "2026-10-14",
+  "members": [
+    "GetMapScale",
+    "SetMapScale",
+    "Straighten",
+    "baseMaterial",
+    "baseMaterial_list",
+    "checkerMaterial",
+    "edgeSnap",
+    "getApplyToWholeObject",
+    "getConstantUpdate",
+    "getNormal",
+    "getShowSelectedVertices",
+    "gridSnap",
+    "hideSelectedPolygons",
+    "peelAutoEdit",
+    "setApplyToWholeObject",
+    "setConstantUpdate",
+    "setDebugLevel",
+    "setShowSelectedVertices",
+    "showIcon",
+    "showImageAlpha",
+    "texMapIDList",
+    "texMapList",
+    "unhideAllPolygons",
+    "vertexSnap"
+  ]
+}

@@ -10,6 +10,23 @@
 | `v0_runtime_probe.py` | 실제 호스트 Python/Qt/Max 버전 JSON | 없음 |
 | `v0_math_probe.py` | 37° 회전 정합과 밀도 공식의 독립 계산 | 없음 |
 
+## 한 번에 실행하는 자동 검사
+
+`v0_auto_check.py`는 기존 수학 검사와 호스트 환경 진단을 묶어 실행한다.
+Max Python Editor에서 이 파일을 실행하면, 오브젝트 하나에 Unwrap UVW가 하나인
+경우 모든 UV 점의 좌표 읽기와 유한값 여부도 검사한다. 씬이나 선택을 변경하지 않는다.
+결과 JSON 경로가 출력되며 기본 위치는 임시 폴더다. `LSY_V0_REPORT_DIR`로 저장
+폴더를 지정할 수 있고, 실행마다 새 파일을 만들어 기존 결과를 보존한다.
+
+일반 Python/클라우드에서는 저장소 루트에서 `python3 -B v0/v0_auto_check.py`를 실행한다.
+Max 검사는 `NOT RUN`으로 남는다. `PASS`는 검사별 결과이며 전체 제품 통과를 뜻하지 않는다.
+UV topology 연결, 재질 대응, 좌표 쓰기, 마우스 드래그, Undo/Redo 및 화면 갱신은
+이 자동 검사의 대상이 아니다. 실제 Max Python 경로는 아직 호스트에서 실행 검증하지 않았다.
+추가 PySide/pymxs 설치는 필요하지 않으며 Max 동봉 모듈을 사용한다.
+
+클라우드 회귀 검사: `python3 -B -m unittest discover -s tests -v`.
+이 검사의 가짜 호스트는 입력 오류와 좌표 검증 로직을 확인하며 Max API 호환성의 증거가 아니다.
+
 ## 준비
 
 1. 테스트할 `.max` 파일을 **복사하여 새 이름으로 저장**한다. 간단한 Editable Poly에 Unwrap UVW modifier가 있고, 재질 텍스처가 보이는 씬이 좋다. P3에는 Editable Poly base + Unwrap 하나만 있는 별도 테스트 씬을 사용한다.
